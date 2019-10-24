@@ -23,7 +23,12 @@ const init = async () => {
       path: '/',
       handler: (request, h) => {
 
-          return 'Hello World!';
+        const response = {
+            statusCode : 200,
+            error : "",
+            message : "Api v1", 
+        } 
+        return h.response(response).code(200)
       }
     },
     {  
