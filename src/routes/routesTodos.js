@@ -6,7 +6,7 @@ const todosHandler = async (request, h) => {
         const response = {
             statusCode : 200,
             error : "",
-            message : "Hitung luas persegi",
+            message : "List Todos",
             content : todos
         } 
         return h.response(response).code(200)
