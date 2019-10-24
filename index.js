@@ -1,5 +1,7 @@
 // const express = require('express')
 // const path = require('path')
+
+const Joi = require('@hapi/joi');
 const PORT = process.env.PORT || 5000
 
 // express()
@@ -16,14 +18,48 @@ const init = async () => {
         port: PORT
     });
 
-    server.route({
+    server.route([{
       method: 'GET',
       path: '/',
       handler: (request, h) => {
 
           return 'Hello World!';
       }
-    });
+    },
+    {  
+        method: 'POST',
+        path: '/persegi',
+        config: {
+          validate: {
+            payload: { 
+              panjang: Joi.number().min(1).required(),
+              lebar: Joi.number().min(1).required()
+            }
+          }
+        },
+        handler: (request, h) => { 
+             console.log(request.payload);      
+             let panjangRequest= request.payload.panjang;
+             let lebarRequest= request.payload.lebar;
+             let hasil = parseInt (panjangRequest) * parseInt (lebarRequest)
+             let statusCode = 200
+             const contentData = { 
+                          data : 'Hitung Luas Segitigad',
+                          panjang: panjangRequest,
+                          lebar : lebarRequest,
+                          hasil: hasil 
+             }
+    
+             const data = {
+               statusCode : statusCode,
+               error : "",
+               message : "Hitung luas persegi",
+               content : contentData 
+             }
+            return h.response(data).code(200)
+        }
+      }
+]);
 
     await server.start();
     console.log('Server running on %s', server.info.uri);
