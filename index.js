@@ -43,8 +43,7 @@ const init = async () => {
              let lebarRequest= request.payload.lebar;
              let hasil = parseInt (panjangRequest) * parseInt (lebarRequest)
              let statusCode = 200
-             const contentData = { 
-                          data : 'Hitung Luas Segitigad',
+             const contentData = {  
                           panjang: panjangRequest,
                           lebar : lebarRequest,
                           hasil: hasil 
