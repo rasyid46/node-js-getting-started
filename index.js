@@ -59,7 +59,8 @@ const init = async () => {
         }
       }
 ]);
-
+const todosRoute = require('./src/routes/routesTodos'); 
+server.route(todosRoute); 
     await server.start();
     console.log('Server running on %s', server.info.uri);
 };
