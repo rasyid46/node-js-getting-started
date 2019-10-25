@@ -1,13 +1,10 @@
-const Models = require('../../models/index') 
 const Joi = require('@hapi/joi');
-const Mongoose = require("mongoose");
-
-Mongoose.connect("mongodb://localhost/belajarmongo");
+const Mongoose = require('../../mongoModel/mongoConfig')
 const PersonModel = Mongoose.model("person", {
     firstname: String,
     lastname: String
-});  
-var MongoClient = require('mongodb').MongoClient;
+});   
+
 const todosHandler = async (request, h) => {
         try {
 
