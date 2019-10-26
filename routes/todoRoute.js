@@ -7,6 +7,42 @@ router.get('/', function(req, res, next) {
   res.send('init todo');
 });
 
+router.post('/val', function(req,res , next){
+  if (!req.body.title) {
+      res.status(400).json({
+        statusCode : 400,
+        error: "title parameter is required",
+        message: ""
+      });
+    }
+
+    const response = {
+      statusCode : 200,
+      error : "",
+      message : "List val", 
+    } 
+  res.json(response);
+});
+
+router.get('/val/(:id)', function(req, res, next) {
+
+  if (!req.params.id) {
+    res.status(400).json({
+      statusCode : 400,
+      error: "title parameter is required",
+      message: ""
+    });
+  }
+
+  const response = {
+    statusCode : 200,
+    error : "",
+    message : "List vazzzl", 
+  } 
+
+  res.json(response);
+});
+
 router.get('/list', async (req, res) => {
   // Do something here
   const todos = await Models.Todos.findAll({})
