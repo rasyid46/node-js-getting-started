@@ -70,6 +70,9 @@ const todosMongo = require('./src/routes/routeMongo');
 server.route(todosRoute); 
 server.route(todosMongo); 
     await server.start();
+
+    const TYPE = process.env.TYPE || "PROD"
+    console.log(TYPE);
     console.log('Server running on %s', server.info.uri);
 };
 
