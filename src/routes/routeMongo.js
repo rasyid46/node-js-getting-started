@@ -4,18 +4,22 @@ const PersonModel = Mongoose.model("person", {
     firstname: String,
     lastname: String
 });   
-
 const todosHandler = async (request, h) => {
         try {
-
             var person = await PersonModel.find().exec();
+            let statucCode = 200;
+            let messageRes = "Data Person";
+            if(person.length == 0){
+                statucCode = 404;
+                messageRes = "Data Not found"
+            }
             const response = {
-                statusCode : 200,
+                statusCode : statucCode,
                 error : "",
-                message : "List mongo", 
+                message : messageRes,
                 content : person
             } 
-            return h.response(response).code(200)
+            return h.response(response).code(statucCode)
         } catch (error) {
             const response = {
                 statusCode : 400,
@@ -33,7 +37,7 @@ const todosHandler = async (request, h) => {
                 const response = {
                     statusCode : 200,
                     error : "",
-                    message : "List mongo", 
+                    message : "List Person", 
                     content : result
                 } 
                 return h.response(result).code(200)
@@ -49,12 +53,18 @@ const todosHandler = async (request, h) => {
     const updateHandler = async (request,h) => {
          try{
             var result = await PersonModel.findByIdAndUpdate(request.params.id, request.payload, { new: true });
+            let statucCode = 200;
+            let messageRes = "Delete Person";
+            if(!result){
+                statucCode = 404;
+                messageRes = "Data Not found"
+            }
             const response = {
-                statusCode : 200,
+                statusCode : statucCode,
                 error : "",
-                message : "List update",
+                message :messageRes,
                 content : result
-            } 
+            }  
             return h.response(response).code(200)
          }catch(error){
             const response = {
@@ -68,13 +78,19 @@ const todosHandler = async (request, h) => {
     const getMonogDetail = async(request, h) => {
         try{
             var person = await PersonModel.findById(request.params.id).exec();
+            let statucCode = 200;
+            let messageRes = "Delete Person";
+            if(!person){
+                statucCode = 404;
+                messageRes = "Data Not found"
+            }
             const response = {
-                statusCode : 200,
+                statusCode : statucCode,
                 error : "",
-                message : "List update",
+                message : messageRes,
                 content : person
             } 
-            return h.response(response).code(200)
+            return h.response(response).code(statucCode)
          }catch(error){
             const response = {
                 statusCode : 400,
@@ -88,13 +104,19 @@ const todosHandler = async (request, h) => {
         try {
             // var person = await PersonModel.findById(request.params.id).exec();
             var result = await PersonModel.findByIdAndDelete(request.params.id);
+            let statucCode = 200;
+            let messageRes = "Delete Person";
+            if(!result){
+                statucCode = 404;
+                messageRes = "Data Not found"
+            }
             const response = {
-                statusCode : 200,
+                statusCode : statucCode,
                 error : "",
-                message : "Delete Person",
+                message :messageRes,
                 content : result
             } 
-            return h.response(response).code(200)
+            return h.response(response).code(statucCode)
         } catch (error) {
             const response = {
                 statusCode : 400,
@@ -105,9 +127,9 @@ const todosHandler = async (request, h) => {
         }
     }
 module.exports = [
-        { method: 'GET', path: '/mongo/list', handler: todosHandler },
-        { method: 'GET', path: '/mongo/list/{id}', handler: getMonogDetail },
-        { method: 'POST',path: '/mongo/create',handler: insertHandler },
-        { method: 'PUT', path: '/mongo/update/{id}', handler: updateHandler },
-        { method: 'DELETE', path: '/mongo/delete/{id}', handler: deletePerson },
+        { method: 'GET', path: '/profile/list', handler: todosHandler },
+        { method: 'GET', path: '/profile/detail/{id}', handler: getMonogDetail },
+        { method: 'POST',path: '/profile/create',handler: insertHandler },
+        { method: 'PUT', path: '/profile/update/{id}', handler: updateHandler },
+        { method: 'GET', path: '/profile/delete/{id}', handler: deletePerson },
     ];
