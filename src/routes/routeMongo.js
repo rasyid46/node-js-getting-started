@@ -40,7 +40,7 @@ const todosHandler = async (request, h) => {
                     message : "List Person", 
                     content : result
                 } 
-                return h.response(result).code(200)
+                return h.response(response).code(200)
             } catch (error) {
                 const response = {
                     statusCode : 400,
