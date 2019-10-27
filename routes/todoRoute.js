@@ -56,14 +56,23 @@ router.get('/list', async (req, res) => {
 })
 
 router.get('/detail/(:id)', async (req, res) => {
-  var person = await PersonModel.findById(req.params.id).exec();
+  const todo_id =req.params.id;   
+  const checkDataTodos =await Models.Todos.findAll({where:{id:todo_id}})
+  let statusCode = 200 
+  let messageRes = "detail todo";
+  if(checkDataTodos.length==0){
+       statusCode = 400
+       messageRes="data not found"
+   }else{
+      checkDataTodos = await PersonModel.findById(todo_id).exec();
+   }
   const response = {
-      statusCode : 200,
-      error : "",
-      message : "List Todo", 
-      content : person
+      statusCode : statusCode,
+      error :messageRes,
+      message : messageRes, 
+      content : checkDataTodos
   } 
-  res.json(response);
+  res.status(statusCode).json(response);
 })
 
 router.post('/create', async (req, res) => {
@@ -82,32 +91,49 @@ router.post('/create', async (req, res) => {
 
 router.put('/update/(:id)', async (req, res) => {  
     const todo_id =req.params.id;       
-        const todo = await Models.Todos.update(req.body, {
-            where: {
-                id: todo_id
-            }
-        })
+    const checkDataTodos =await Models.Todos.findAll({where:{id:todo_id}})
+    let statusCode = 200 
+    let messageRes = "Todo has been updated";
+    if(checkDataTodos.length==0){
+         statusCode = 400
+         messageRes="data not found"
+     }else{
+        checkDataTodos = await Models.Todos.update(req.body, {
+                    where: {
+                        id: todo_id
+                    }
+                })             
+     } 
+
+
     const response = {
-        statusCode : 200,
-        error : "",
-        message : "Todo has been updated",
+        statusCode : statusCode,
+        error : messageRes,
+        message : messageRes,
         content : req.body
     } 
-  res.json(response);
+  res.status(statusCode).json(response);
 })
 router.get('/delete/(:id)', async (req, res) => {
     const todo_id =req.params.id;
+   const checkDataTodos =await Models.Todos.findAll({where:{id:todo_id}})
+    let statusCode = 200 
+    let messageRes = "Delete todo";
+    if(checkDataTodos.length==0){
+         statusCode = 400
+         messageRes="data not found"
+     } 
     await Models.Todos.destroy({
             where: {
                 id: todo_id
             }
         })
   const response = {
-      statusCode : 200,
-      error : "",
-      message : "Delete todo", 
+      statusCode : statusCode,
+      error :messageRes,
+      message : messageRes, 
       content : req.params.id
   } 
-  res.json(response);
+  res.status(statusCode).json(response);
 })
 module.exports = router;
