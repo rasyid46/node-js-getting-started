@@ -4,22 +4,18 @@ const PersonModel = Mongoose.model("person", {
     firstname: String,
     lastname: String
 });   
+
 const todosHandler = async (request, h) => {
         try {
+
             var person = await PersonModel.find().exec();
-            let statucCode = 200;
-            let messageRes = "Data Person";
-            if(person.length == 0){
-                statucCode = 404;
-                messageRes = "Data Not found"
-            }
             const response = {
-                statusCode : statucCode,
+                statusCode : 200,
                 error : "",
-                message : messageRes,
+                message : "List mongo", 
                 content : person
             } 
-            return h.response(response).code(statucCode)
+            return h.response(response).code(200)
         } catch (error) {
             const response = {
                 statusCode : 400,
@@ -37,10 +33,10 @@ const todosHandler = async (request, h) => {
                 const response = {
                     statusCode : 200,
                     error : "",
-                    message : "List Person", 
+                    message : "List mongo", 
                     content : result
                 } 
-                return h.response(response).code(200)
+                return h.response(result).code(200)
             } catch (error) {
                 const response = {
                     statusCode : 400,
@@ -53,18 +49,12 @@ const todosHandler = async (request, h) => {
     const updateHandler = async (request,h) => {
          try{
             var result = await PersonModel.findByIdAndUpdate(request.params.id, request.payload, { new: true });
-            let statucCode = 200;
-            let messageRes = "Delete Person";
-            if(!result){
-                statucCode = 404;
-                messageRes = "Data Not found"
-            }
             const response = {
-                statusCode : statucCode,
+                statusCode : 200,
                 error : "",
-                message :messageRes,
+                message : "List update",
                 content : result
-            }  
+            } 
             return h.response(response).code(200)
          }catch(error){
             const response = {
@@ -78,19 +68,13 @@ const todosHandler = async (request, h) => {
     const getMonogDetail = async(request, h) => {
         try{
             var person = await PersonModel.findById(request.params.id).exec();
-            let statucCode = 200;
-            let messageRes = "Delete Person";
-            if(!person){
-                statucCode = 404;
-                messageRes = "Data Not found"
-            }
             const response = {
-                statusCode : statucCode,
+                statusCode : 200,
                 error : "",
-                message : messageRes,
+                message : "List update",
                 content : person
             } 
-            return h.response(response).code(statucCode)
+            return h.response(response).code(200)
          }catch(error){
             const response = {
                 statusCode : 400,
@@ -104,19 +88,13 @@ const todosHandler = async (request, h) => {
         try {
             // var person = await PersonModel.findById(request.params.id).exec();
             var result = await PersonModel.findByIdAndDelete(request.params.id);
-            let statucCode = 200;
-            let messageRes = "Delete Person";
-            if(!result){
-                statucCode = 404;
-                messageRes = "Data Not found"
-            }
             const response = {
-                statusCode : statucCode,
+                statusCode : 200,
                 error : "",
-                message :messageRes,
+                message : "Delete Person",
                 content : result
             } 
-            return h.response(response).code(statucCode)
+            return h.response(response).code(200)
         } catch (error) {
             const response = {
                 statusCode : 400,

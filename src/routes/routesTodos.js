@@ -68,19 +68,30 @@ const updateTodoHandler = async (request, h) => {
 
 const deleteTodoHandler = async (request, h) => {
     try {
-        const todo_id = request.params.id;
-        await Models.Todos.destroy({
-            where: {
-                id: todo_id
-            }
-        })
+    const id = request.params.id;
+            const todo_id = request.params.id;
+    const checkData =  await Models.Todos.findAll({where:{id:id}});
+    console.log('hhhh',checkData);
+    let statusCode= 200;
+    let messageRes = "Todo has been delete"
+    if(checkData.length==0){
+        statusCode = 404;
+        messageRes = "data not found";
+    }else{
+                await Models.Todos.destroy({
+                        where: {
+                            id: todo_id
+                        }
+                    })
+    }  
+
         const response = {
-            statusCode : 200,
-            error : "",
-            message : "Todo has been deleted.",
-            content : request.payload
+            statusCode : statusCode,
+            error : messageRes,
+            message : messageRes,
+            
         } 
-        return h.response(response).code(200)
+        return h.response(response).code(statusCode)
     } catch (error) {
         const response = {
                             statusCode : 400,
